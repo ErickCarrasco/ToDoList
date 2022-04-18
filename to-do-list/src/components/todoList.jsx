@@ -48,14 +48,24 @@ const TodoList = params => {
     const setCompleted = async(e) =>{
         console.log(e.target.id)
         console.log("HALLO")
+        let name = e.target.id;
         let obj;
-        let list = [];
+        let id;
         const querySnapshot = await db.collection("todolists").get();
         querySnapshot.forEach((doc) => {
-            obj = doc.id
-            console.log(obj)
-            list.push(obj);
+            obj= doc.data();
+            
+            if(obj.name ==e.target.id ){
+                id = doc.id;
+                
+            }
         })
+        let state = true;
+        let isActive = true;
+        let item = {name, state, isActive}
+        db.collection("todolists").doc(id).set(item);
+
+
     }
 
     return (
