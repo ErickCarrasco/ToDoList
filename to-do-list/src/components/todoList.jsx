@@ -46,6 +46,7 @@ const TodoList = params => {
     }
 
     const setCompleted = async(e) =>{
+        console.log(e)
         console.log(e.target.id)
         console.log("HALLO")
         let name = e.target.id;
@@ -64,7 +65,7 @@ const TodoList = params => {
         let isActive = true;
         let item = {name, state, isActive}
         db.collection("todolists").doc(id).set(item);
-
+        getList()
 
     }
 
