@@ -9,7 +9,6 @@ const TodoList = params => {
 
 
     const [taskList, setTaskList] = useState([])
-
     
 
     const getList = async () => {
@@ -44,6 +43,19 @@ const TodoList = params => {
 
     const clearName = () =>{
         setName("");
+    }
+
+    const setCompleted = async(e) =>{
+        console.log(e.target.id)
+        console.log("HALLO")
+        let obj;
+        let list = [];
+        const querySnapshot = await db.collection("todolists").get();
+        querySnapshot.forEach((doc) => {
+            obj = doc.id
+            console.log(obj)
+            list.push(obj);
+        })
     }
 
     return (
@@ -95,17 +107,17 @@ const TodoList = params => {
                 >
                 <li className='todo stack-small'>
                     <div className='c-cb'>
-                        <input id={tile.name} type="checkbox" />
+                        <input id={tile.name} type="checkbox" onChange={setCompleted} checked={tile.state}/>
                         <label className='todo-label' htmlFor={tile.name}>
                             {tile.name}
                         </label>
                     </div>
                     <div className="btn-group">
                         <button type="button" className="btn">
-                            Edit <span className="Visually-hidden">{tile.name}</span>
+                            Edit 
                         </button>
                         <button type="button" className="btn">
-                            Delete <span className="Visually-hidden">{tile.name}</span>
+                            Delete 
                         </button>
                     </div>
 
