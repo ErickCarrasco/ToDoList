@@ -5,11 +5,11 @@ import './todoList.css'
 
 const TodoList = params => {
 
-    const [name, setName] = useState()
-    const [state, setState] = useState(false)
-    const [comment, setComment] = useState()
+    const [name, setName] = useState("")
+
 
     const [taskList, setTaskList] = useState([])
+
     
 
     const getList = async () => {
@@ -26,13 +26,30 @@ const TodoList = params => {
     };
 
     useEffect(() => {
+        
         getList();
+            
+        
     }, [])
+
+    const addTask =  (e) =>{
+        let state = false;
+        let isActive = true;
+        let obj = {name, state, isActive}
+        db.collection("todolists").add(obj)
+        setTaskList([...taskList, obj])
+        clearName()
+        e.preventDefault()
+    }
+
+    const clearName = () =>{
+        setName("");
+    }
 
     return (
         <div className='container' >
             <h1>MY To-Do List</h1>
-            <form>
+            <form onSubmit={addTask}>
                 <h2 className="label-wrapper">
                     <label htmlFor="new-todo-input" className="label__lg">
                         What needs to be done?
@@ -42,10 +59,12 @@ const TodoList = params => {
                     type="text"
                     id="new-todo-input"
                     className="input input__lg"
-                    name="text"
+                    name="name"
+                    value={name}
                     autoComplete="off"
+                    onChange={(e) =>setName(e.target.value)}
                 />
-                <button type="submit" className="btn btn__primary btn__lg">
+                <button  type="submit" className="btn btn__primary btn__lg" >
                     Add
                 </button>
             </form>
@@ -68,6 +87,12 @@ const TodoList = params => {
             </div>
 
             {taskList.map((tile, index)=>(
+                <ul
+                role="list"
+                className="todo-list stack-large stack-exception"
+                aria-labelledby="list-heading"
+              
+                >
                 <li className='todo stack-small'>
                     <div className='c-cb'>
                         <input id={tile.name} type="checkbox" />
@@ -85,6 +110,7 @@ const TodoList = params => {
                     </div>
 
                 </li>
+                </ul>
             ))}
 
             
